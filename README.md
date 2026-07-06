@@ -102,10 +102,11 @@ Reasoning for Pet2's schedule on 2026-07-06:
 
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting | Scheduler.sort_by_time()| uses _time_to_min() to convert "HH:MM" to an integer key |
+| Filtering |  Owner.get_tasks(pet_name = None, completed = None)| Filters tassk across all of an owner's pets, with two optional arguments|
+| Conflict handling |  Scheduler.check_conflicts(schedules) | Checks for time conflicts and returns list of warning strings |
+| Recurring tasks |  Task.mark_complete(), Task.next_occurrence() | Marks a task as complete, next_occurence advances due_date according to setting "daily" or "weekly" |
+
 
 ## 📸 Demo Walkthrough
 

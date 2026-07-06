@@ -22,6 +22,8 @@ Yes, the design changed after reviewing. For example, added day_start attribute 
 
 **b. Tradeoffs**
 
+One tradeoff my scheduler makes is checking for conflicts after tasks have been scheduled instead of checking them at the same time. This tradeoff is reasonable because it is possible that a person wants to schedule 2 tasks at the same time (maybe they have a helper, or maybe they could multitask), and give them a warning later just as a heads up, not as a restriction.
+
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
 

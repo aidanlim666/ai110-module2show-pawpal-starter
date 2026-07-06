@@ -1,6 +1,6 @@
 from __future__ import annotations
-from dataclasses import dataclass, field
-from datetime import date as _date
+from dataclasses import dataclass, field, replace
+from datetime import date as _date, timedelta as _timedelta
 from typing import Optional
 
 
@@ -34,10 +34,20 @@ class Task:
     is_recurring: bool = False
     frequency: str = "daily"           # "daily" | "weekly"
     completed: bool = False
+    due_date: Optional[_date] = None   # date this instance is scheduled for
 
-    def mark_complete(self) -> None:
-        """Mark this task as done."""
+    def mark_complete(self) -> Optional["Task"]:
+        """Mark this task as done. If recurring, return a fresh instance for the next occurrence."""
         self.completed = True
+        if self.is_recurring:
+            return self.next_occurrence()
+        return None
+
+    def next_occurrence(self) -> "Task":
+        """Return a new, incomplete Task for the next occurrence, due_date advanced by frequency."""
+        base_date = self.due_date or _date.today()
+        step = _timedelta(weeks=1) if self.frequency == "weekly" else _timedelta(days=1)
+        return replace(self, completed=False, due_date=base_date + step)
 
     def priority_value(self) -> int:
         """Return numeric priority: high=3, medium=2, low=1."""
@@ -88,6 +98,21 @@ class Owner:
             if pet.name.lower() == name.lower():
                 return pet
         return None
+
+    def get_tasks(self, pet_name: Optional[str] = None, completed: Optional[bool] = None) -> list[Task]:
+        """Return tasks across all pets, optionally filtered by pet name and/or completion status."""
+        if pet_name is not None:
+            pet = self.get_pet(pet_name)
+            pets = [pet] if pet else []
+        else:
+            pets = self.pets
+
+        tasks = [task for pet in pets for task in pet.tasks]
+
+        if completed is not None:
+            tasks = [t for t in tasks if t.completed == completed]
+
+        return tasks
 
 
 @dataclass
@@ -188,6 +213,13 @@ class Scheduler:
         # Primary: highest priority first. Tie-break: shorter task first.
         return sorted(tasks, key=lambda t: (-t.priority_value(), t.duration_minutes))
 
+    def sort_by_time(self, tasks: list[Task]) -> list[Task]:
+        """Sort tasks chronologically by fixed_time; flexible (no fixed_time) tasks sort last."""
+        return sorted(
+            tasks,
+            key=lambda t: (t.fixed_time is None, _time_to_min(t.fixed_time) if t.fixed_time else 0),
+        )
+
     def _place_fixed_tasks(self, tasks: list[Task], day_start: str) -> list[ScheduledEntry]:
         """Create entries for tasks that have a required start time."""
         entries = []
@@ -255,6 +287,29 @@ class Scheduler:
                 if a_start < b_end and b_start < a_end:
                     conflicts.append((a.task.title, b.task.title))
         return conflicts
+
+    def check_conflicts(self, schedules: list[DailySchedule]) -> list[str]:
+        """Lightweight check for overlapping time slots across one or more pets' schedules.
+
+        Compares every entry against every other entry (same pet or different pets) —
+        an owner can't do two things at once regardless of which pet they're for.
+        Returns human-readable warning strings instead of raising, so a conflict never
+        crashes the program; the caller decides whether to print, log, or ignore them.
+        """
+        warnings: list[str] = []
+        all_entries = [(s.pet_name, e) for s in schedules for e in s.entries]
+
+        for i, (pet_a, a) in enumerate(all_entries):
+            for pet_b, b in all_entries[i + 1:]:
+                a_start, a_end = _time_to_min(a.start_time), _time_to_min(a.end_time)
+                b_start, b_end = _time_to_min(b.start_time), _time_to_min(b.end_time)
+                if a_start < b_end and b_start < a_end:
+                    warnings.append(
+                        f"Conflict: '{a.task.title}' ({pet_a}, {a.start_time}-{a.end_time}) overlaps "
+                        f"with '{b.task.title}' ({pet_b}, {b.start_time}-{b.end_time})"
+                    )
+
+        return warnings
 
     def _build_reason(self, task: Task, position: int) -> str:
         """Build a human-readable explanation for why a task was scheduled at its slot."""
