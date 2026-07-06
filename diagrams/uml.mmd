@@ -1,15 +1,62 @@
 classDiagram
-    %% Replace the placeholders below with your actual classes, attributes, methods, and relationships.
-    %% Keep this file updated so it matches your final implementation.
-
-    class ClassName {
-        +type attribute
-        +method() returnType
+    class Task {
+        +str title
+        +int duration_minutes
+        +str priority
+        +str category
+        +str fixed_time
+        +bool is_recurring
+        +str frequency
+        +priority_value() int
+        +is_fixed_time() bool
+        +fits_in(available_minutes) bool
     }
 
-    class AnotherClass {
-        +type attribute
-        +method() returnType
+    class Pet {
+        +str name
+        +str species
+        +list tasks
+        +add_task(task)
+        +remove_task(title)
+        +get_tasks() list
     }
 
-    ClassName --> AnotherClass : relationship
+    class Owner {
+        +str name
+        +int available_minutes
+        +list pets
+        +add_pet(pet)
+        +get_pet(name) Pet
+    }
+
+    class Scheduler {
+        +schedule_day(pet, available_minutes) DailySchedule
+        +_sort_by_priority(tasks) list
+        +_place_fixed_tasks(tasks) list
+        +_fill_remaining(tasks, fixed_entries, remaining_minutes) list
+        +_build_reason(task) str
+    }
+
+    class ScheduledEntry {
+        +Task task
+        +str start_time
+        +str end_time
+        +str reason
+    }
+
+    class DailySchedule {
+        +str pet_name
+        +list entries
+        +list skipped_tasks
+        +int total_duration_minutes
+        +get_summary() str
+        +explain() str
+    }
+
+    Owner "1" --> "1..*" Pet : has
+    Pet "1" --> "0..*" Task : has
+    Scheduler ..> Pet : reads
+    Scheduler ..> Owner : reads
+    Scheduler --> DailySchedule : produces
+    DailySchedule "1" --> "0..*" ScheduledEntry : contains
+    ScheduledEntry --> Task : references

@@ -4,6 +4,9 @@
 
 **a. Initial design**
 
+Three core actions a user should be able to perform: add a task, see pending tasks, mark a task as complete.
+UML Design:
+
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
