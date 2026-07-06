@@ -4,16 +4,12 @@
 
 **a. Initial design**
 
-Three core actions a user should be able to perform: add a task, see pending tasks, mark a task as complete.
-UML Design:
+In my initial UML design, I created 6 classes. Task is the core data object, holding all attributes a task should have, including title, duration, priority, category, start time (optional), and recurrence info. Pet describes a pet, holding the animal/s name, species, and a list of Task objects that are associated with it. Owner describes the human, continaing a list of Pet objects, name, and total availble mins/day. DailySchedule holds an ordered list of ScheduledEntery objects, any tasks that were skipped, and total duration. ScheduledEntry describes an entry, pairing a Task with a start and end time, along with reason. Scheduler has no data of its own, its job is to calculate a DailySchedule based on the owner's available minutes and a Pet (which itself contains Tasks).
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+Yes, the design changed after reviewing. For example, added day_start attribute to Owner, so that we can set a wake up time, and we can know when the day starts, so that the scheduler can produce concrete clock times.
 
 ---
 

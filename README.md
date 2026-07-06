@@ -68,6 +68,32 @@ Sample test output:
 
 ```
 # Paste your pytest output here
+TODAY'S SCHEDULE
+
+Daily plan for Pet1 (Aidan) — 2026-07-06:
+  08:00–08:05  Morning meds (5 min) [high]
+  08:05–08:15  Feeding (10 min) [high]
+  08:15–08:35  Enrichment toy (20 min) [low]
+Total: 35 min
+
+Reasoning for Pet1's schedule on 2026-07-06:
+  • Morning meds: #1, priority: high, fixed at 08:00, category: meds
+  • Feeding: #2, priority: high, flexible — fit into available time, category: feeding
+  • Enrichment toy: #3, priority: low, flexible — fit into available time, category: enrichment
+--------------------------------------------------
+
+Daily plan for Pet2 (Aidan) — 2026-07-06:
+  08:00–08:30  Morning walk (30 min) [high]
+  08:30–08:55  Grooming (25 min) [medium]
+  09:00–09:10  Breakfast (10 min) [high]
+  09:10–09:30  Play session (20 min) [low]
+Total: 85 min
+
+Reasoning for Pet2's schedule on 2026-07-06:
+  • Morning walk: #2, priority: high, flexible — fit into available time, category: walk
+  • Grooming: #3, priority: medium, flexible — fit into available time, category: grooming
+  • Breakfast: #1, priority: high, fixed at 09:00, category: feeding
+  • Play session: #4, priority: low, flexible — fit into available time, category: enrichme
 ```
 
 ## 📐 Smarter Scheduling

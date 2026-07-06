@@ -24,16 +24,18 @@ classDiagram
     class Owner {
         +str name
         +int available_minutes
+        +str day_start
         +list pets
         +add_pet(pet)
         +get_pet(name) Pet
     }
 
     class Scheduler {
-        +schedule_day(pet, available_minutes) DailySchedule
+        +schedule_day(pet, owner) DailySchedule
         +_sort_by_priority(tasks) list
-        +_place_fixed_tasks(tasks) list
-        +_fill_remaining(tasks, fixed_entries, remaining_minutes) list
+        +_place_fixed_tasks(tasks, day_start) list
+        +_fill_remaining(tasks, fixed_entries, remaining_minutes, day_start) list
+        +_detect_conflicts(entries) list
         +_build_reason(task) str
     }
 
@@ -46,9 +48,12 @@ classDiagram
 
     class DailySchedule {
         +str pet_name
+        +str owner_name
+        +str date
         +list entries
         +list skipped_tasks
         +int total_duration_minutes
+        +add_entry(entry)
         +get_summary() str
         +explain() str
     }
@@ -57,6 +62,6 @@ classDiagram
     Pet "1" --> "0..*" Task : has
     Scheduler ..> Pet : reads
     Scheduler ..> Owner : reads
-    Scheduler --> DailySchedule : produces
+    Scheduler ..> DailySchedule : produces
     DailySchedule "1" --> "0..*" ScheduledEntry : contains
     ScheduledEntry --> Task : references
