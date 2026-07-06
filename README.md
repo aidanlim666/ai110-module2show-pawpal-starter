@@ -58,11 +58,13 @@ Paste a sample of your app's CLI or Streamlit output here so a reader can see wh
 
 ```bash
 # Run the full test suite:
-pytest
+python3 -m pytest
 
 # Run with coverage:
 pytest --cov
 ```
+
+The tests cover task basics, sorting correctness, recurrence logic, and conflict detections.
 
 Sample test output:
 
