@@ -78,9 +78,11 @@ if st.button("Add task"):
     st.session_state.pet.add_task(task)
     st.success(f"Added: {task_title}")
 
+scheduler = Scheduler()
+
 current_tasks = st.session_state.pet.get_tasks()
 if current_tasks:
-    st.write("Current tasks:")
+    st.write("Current tasks (chronological order — flexible tasks last):")
     st.table([
         {
             "Title": t.title,
@@ -89,7 +91,7 @@ if current_tasks:
             "Category": t.category,
             "Fixed time": t.fixed_time or "—",
         }
-        for t in current_tasks
+        for t in scheduler.sort_by_time(current_tasks)
     ])
 else:
     st.info("No tasks yet. Add one above.")
@@ -110,9 +112,17 @@ if st.button("Generate schedule"):
     pet.species = species
     owner.add_pet(pet)
 
-    schedule = Scheduler().schedule_day(pet, owner)
+    schedule = scheduler.schedule_day(pet, owner)
 
     st.markdown("#### Today's Plan")
     st.text(schedule.get_summary())
     st.markdown("#### Reasoning")
     st.text(schedule.explain())
+
+    conflict_warnings = scheduler.check_conflicts([schedule])
+    if conflict_warnings:
+        st.markdown("#### Conflict Warnings")
+        for warning in conflict_warnings:
+            st.warning(warning)
+    else:
+        st.success("No time conflicts detected.")

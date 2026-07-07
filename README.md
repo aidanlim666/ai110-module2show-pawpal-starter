@@ -112,12 +112,23 @@ Reasoning for Pet2's schedule on 2026-07-06:
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+Run with:
+python3 -m streamlit run app.py
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. Enter owner info.
+2. Enter pet info.
+3.  Add a fixed-time task (ex. feed breakfast) and set fixed or flexible time, category, duration, priority
+4. Add as many tasks as needed.
+5. Review the task table.
+6. Click "Generate Schedule".
+
+## Features
+1. Priority-based scheduling
+2. Fixed-time placement
+3. Conflict detection as warnings
+4. Sorting by time
+5. Recurrence options
+6. Task filtering
+7. Schedule explanations
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->

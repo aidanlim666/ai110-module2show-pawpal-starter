@@ -33,13 +33,12 @@ One tradeoff my scheduler makes is checking for conflicts after tasks have been 
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+I used AI to brainstorm, add efficiency, and implement my code. I often brainstormed with AI, asking first with "Plan Mode" to get a general picture on what it thinks is the best approach, then tweaked it as needed, adding in new attributes such as priority. I also used it to debug. Some prompts that were helpful included giving the AI exact instructions, such as telling it certain methods and attributes I wanted a new class to have, rather than just allowing it to make up its own mind.
+
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+I didn't accept the AI's suggestion to disallow scheduling tasks at the same time. The AI may not have had the full context, and suggested scheduling so that tasks had to be at seperate times, but after seeing the next instruction on the project page ("Ask your AI coding assistant for a "lightweight" conflict detection strategy that returns a warning message rather than crashing the program."), I told the AI to brainstorm again using the abovementioned lightweight conflict detection strategy.
 
 ---
 
@@ -47,26 +46,25 @@ One tradeoff my scheduler makes is checking for conflicts after tasks have been 
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+I tested task basics, sorting correctness, recurrence logic, and conflict detections. These tests are important because they are the core features of this project.
+
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
-
+I am 8/10 confident that the scheduler works correctly, as I have tested many times, and also allowed Claude to make more tests, ensuring high quality. If I had more time, I would have tested the functionality of inputing zero or negative time for available minutes.
+=
 ---
 
 ## 5. Reflection
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+I think this was a good project that allowed me to improve my coding skills with AI as a development partner, and allowed me to utilize it in a way that improved quality, not detoriated it (as in vibecoding)
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+I would make the graphical user interface better, with more contrasting colors, and easier to see buttons and fonts. 
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+I learned that AI is a powerful design partner indeed, but tests must be thoroughly written to check it and allow it to iterate over itself many times.
